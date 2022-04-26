@@ -1,9 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Head from "next/head";
+
+import moment from "moment";
+import deLocale from "moment/locale/de";
 
 import Header from "./components/Header";
 
+import "react-dates/initialize";
+import "react-dates/lib/css/_datepicker.css";
+
+import { DateRangePicker } from "react-dates";
+
 function Verein() {
+  const [startDate, setStartDate] = useState(moment());
+  const [endDate, setEndDate] = useState(moment());
+  const [focusedInput, setFocusedInput] = useState(null);
+
+  useEffect(() => {
+    moment.locale("de", deLocale);
+  }, []);
+
   return (
     <div>
       <Head>
@@ -22,7 +38,22 @@ function Verein() {
 
       <main>
         <div className="p-20 text-slate-700">
-          <p>Das Verein</p>
+          <p>Datum</p>
+          <DateRangePicker
+            minimumNights={0}
+            startDateId="startDate"
+            endDateId="endDate"
+            startDate={startDate}
+            endDate={endDate}
+            onDatesChange={({ startDate, endDate }) => {
+              setStartDate(startDate);
+              setEndDate(endDate);
+            }}
+            focusedInput={focusedInput}
+            onFocusChange={(focusedInput) => {
+              setFocusedInput(focusedInput);
+            }}
+          />
         </div>
       </main>
 
