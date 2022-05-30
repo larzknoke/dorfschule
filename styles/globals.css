@@ -20,3 +20,45 @@
 .nav span {
   @apply inline-block hover:cursor-pointer hover:translate-y-1 transition duration-300;
 }
+
+h1 {
+  @apply text-3xl mb-8 font-medium;
+}
+h2 {
+  @apply text-2xl mb-5;
+}
+h3 {
+  @apply text-xl mb-5;
+}
+
+.fc-toolbar button {
+  @apply rounded-sm !important;
+}
+.fc-button-group {
+  gap: 10px;
+}
+
+.button {
+  @apply bg-slate-700 text-white px-12 py-4 rounded-sm hover:bg-slate-200 hover:text-slate-700 transition-all duration-300 ease-in;
+}
+
+.CalendarDay__selected_span {
+  background: theme("colors.slate.500") !important;
+  border: 1px double theme("colors.slate.400") !important;
+}
+.CalendarDay__selected {
+  background: theme("colors.slate.600") !important;
+  color: white !important;
+  border: 1px double theme("colors.slate.400") !important;
+}
+
+.CalendarDay__hovered_span:hover,
+.CalendarDay__hovered_span {
+  background: theme("colors.slate.200") !important;
+  border: 1px double theme("colors.slate.400") !important;
+  color: theme("colors.slate.600") !important;
+}
+
+.DayPickerKeyboardShortcuts_show__bottomRight::before {
+  border-right-color: theme("colors.slate.600") !important;
+}

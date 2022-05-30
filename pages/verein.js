@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Head from "next/head";
 
 import moment from "moment";
@@ -11,10 +11,18 @@ import "react-dates/lib/css/_datepicker.css";
 
 import { DateRangePicker } from "react-dates";
 
+import FullCalendar from "@fullcalendar/react";
+import interactionPlugin from "@fullcalendar/interaction";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import dayGridPlugin from "@fullcalendar/daygrid";
+// import deLocale from "@fullcalendar/core/locales/de";
+
 function Verein() {
   const [startDate, setStartDate] = useState(moment());
   const [endDate, setEndDate] = useState(moment());
   const [focusedInput, setFocusedInput] = useState(null);
+
+  const calendarRef = useRef(null);
 
   useEffect(() => {
     moment.locale("de", deLocale);
@@ -37,23 +45,77 @@ function Verein() {
       <Header darkNav="true" />
 
       <main>
-        <div className="p-20 text-slate-700">
-          <p>Datum</p>
-          <DateRangePicker
-            minimumNights={0}
-            startDateId="startDate"
-            endDateId="endDate"
-            startDate={startDate}
-            endDate={endDate}
-            onDatesChange={({ startDate, endDate }) => {
-              setStartDate(startDate);
-              setEndDate(endDate);
-            }}
-            focusedInput={focusedInput}
-            onFocusChange={(focusedInput) => {
-              setFocusedInput(focusedInput);
-            }}
-          />
+        <div className="md:p-20 p-12 text-slate-700 ">
+          <h1 className="">Termine und Kalender</h1>
+          <div className="flex lg:space-x-44 flex-col md:flex-row space-y-12 md:space-y-0">
+            <div className=" border-l-2 px-6 py-3 border-slate-200 w-full">
+              <h3>Neuen Termin eintragen</h3>
+              <div className="mb-6">
+                <label htmlFor="email" className="block mb-2">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  id="email"
+                  className="border rounded-sm border-slate-300 w-full"
+                />
+              </div>
+              <div className="mb-6">
+                <label htmlFor="beschreibung" className="block mb-2">
+                  Beschreibung
+                </label>
+                <textarea
+                  id="beschreibung"
+                  className="border rounded-sm border-slate-300 w-full h-24"
+                />
+              </div>
+              <div className="mb-6">
+                <label htmlFor="beschreibung" className="block mb-2">
+                  Personenzahl
+                </label>
+                <input
+                  type="text"
+                  id="personenzahl"
+                  className="border rounded-sm border-slate-300 w-full"
+                />
+              </div>
+
+              <div className="w-full mb-6">
+                <label htmlFor="datum" className="block mb-2">
+                  Datum
+                </label>
+                <DateRangePicker
+                  className="w-full"
+                  minimumNights={0}
+                  startDateId="startDate"
+                  endDateId="endDate"
+                  startDate={startDate}
+                  endDate={endDate}
+                  openDirection="up"
+                  onDatesChange={({ startDate, endDate }) => {
+                    setStartDate(startDate);
+                    setEndDate(endDate);
+                  }}
+                  focusedInput={focusedInput}
+                  onFocusChange={(focusedInput) => {
+                    setFocusedInput(focusedInput);
+                  }}
+                />
+              </div>
+              <button className="button">Senden</button>
+            </div>
+            <div className="w-full">
+              <FullCalendar
+                innerRef={calendarRef}
+                plugins={[timeGridPlugin, interactionPlugin, dayGridPlugin]}
+                initialView="dayGridMonth"
+                locale="deLocale"
+                firstDay={1}
+                height={"auto"}
+                buttonText={{ today: "Heute" }}
+              />
+            </div>
+          </div>
         </div>
       </main>
 
