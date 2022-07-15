@@ -36,11 +36,8 @@ function Verein() {
 
   useEffect(() => {
     moment.locale("de", deLocale);
-  }, []);
-
-  useEffect(() => {
     getEvents();
-  }, [events]);
+  }, []);
 
   const getEvents = () => {
     getDocs(dbEvents).then((data) => {
@@ -74,6 +71,8 @@ function Verein() {
       setPersonenzahl("");
       setStartDate(moment());
       setEndDate(moment());
+
+      getEvents();
     } catch (e) {
       console.error("Error adding document: ", e);
       alert("Error adding document: ", e);
