@@ -39,12 +39,37 @@ h3 {
 }
 
 .button {
-  @apply bg-slate-700 text-white px-12 py-4 rounded-sm hover:bg-slate-200 hover:text-slate-700 transition-all duration-300 ease-in;
+  @apply hover:bg-slate-700 hover:text-white px-10 py-3 rounded-sm bg-slate-300 transition-all;
+}
+
+.DatePicker .DateRangePicker_picker {
+  @apply z-50;
+}
+.DatePicker .DateRangePicker {
+  @apply w-full;
+}
+.DatePicker .DateRangePickerInput {
+  @apply justify-evenly;
+}
+.DatePicker .DateInput_input {
+  @apply py-[5px] text-lg text-center;
+}
+
+.DatePicker .DateRangePickerInput__withBorder {
+  @apply border-slate-300;
+}
+
+.DatePicker .DateRangePickerInput {
+  @apply flex;
+}
+
+.DatePicker .DateRangePickerInput_arrow {
+  @apply self-center;
 }
 
 .CalendarDay__selected_span {
-  background: theme("colors.slate.500") !important;
-  border: 1px double theme("colors.slate.400") !important;
+  background: theme("colors.slate.300") !important;
+  border: 1px double theme("colors.slate.200") !important;
 }
 .CalendarDay__selected {
   background: theme("colors.slate.600") !important;
@@ -54,11 +79,15 @@ h3 {
 
 .CalendarDay__hovered_span:hover,
 .CalendarDay__hovered_span {
-  background: theme("colors.slate.200") !important;
+  background: theme("colors.slate.300") !important;
   border: 1px double theme("colors.slate.400") !important;
   color: theme("colors.slate.600") !important;
 }
 
 .DayPickerKeyboardShortcuts_show__bottomRight::before {
   border-right-color: theme("colors.slate.600") !important;
+}
+
+.fc .fc-daygrid-day.fc-day-today {
+  @apply bg-slate-200 !important;
 }
