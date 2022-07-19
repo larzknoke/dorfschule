@@ -56,8 +56,8 @@ function Verein() {
       name: name,
       beschreibung: beschreibung,
       personenzahl: personenzahl,
-      startDate: startDate.format("DD-MM-YYYY"),
-      endDate: endDate.format("DD-MM-YYYY"),
+      startDate: startDate.format("YYYY-MM-DD"),
+      endDate: endDate.format("YYYY-MM-DD"),
     };
 
     console.log("Submit", formData);
@@ -179,19 +179,32 @@ function Verein() {
                 firstDay={1}
                 height={"auto"}
                 buttonText={{ today: "Heute" }}
+                events={events.map((event) => {
+                  return {
+                    title: event.beschreibung,
+                    start: event.startDate,
+                    end: event.endDate,
+                  };
+                })}
               />
             </div>
           </div>
           {events && (
             <table>
-              {events.map((event) => {
-                return (
-                  <tr>
-                    <td>{event.name}</td>
-                    <td>{event.beschreibung}</td>
-                  </tr>
-                );
-              })}
+              <tbody>
+                {events.map((event) => {
+                  return (
+                    <tr key={event.id}>
+                      <td>{event.name}</td>
+                      <td>{event.beschreibung}</td>
+                      <td>
+                        {moment(event.startDate).format("DD-MM-YYYY")} -{" "}
+                        {moment(event.endDate).format("DD-MM-YYYY")}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
             </table>
           )}
         </div>
