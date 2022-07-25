@@ -21,6 +21,8 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import { async } from "@firebase/util";
 // import deLocale from "@fullcalendar/core/locales/de";
 
+import { Button, ButtonGroup, Tooltip } from "@chakra-ui/react";
+
 function Verein() {
   const dbEvents = collection(db, "events");
 
@@ -169,6 +171,9 @@ function Verein() {
               <button onClick={handleSubmit} className="button w-full">
                 Senden
               </button>
+              <Tooltip label="Hover me">
+                <Button colorScheme="blue">Button 2</Button>
+              </Tooltip>
             </div>
             <div className="w-full">
               <FullCalendar
