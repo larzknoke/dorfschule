@@ -19,11 +19,11 @@
     "@fullcalendar/timegrid": "^5.11.0",
     "firebase": "^9.9.0",
     "moment": "^2.29.3",
-    "next": "12.1.5",
+    "next": "^12.2.3",
     "next-transpile-modules": "^9.0.0",
-    "react": "^16.14.0",
+    "react": "^18.2.0",
     "react-dates": "^21.8.0",
-    "react-dom": "^16.14.0",
+    "react-dom": "^18.2.0",
     "react-with-direction": "^1.4.0"
   },
   "devDependencies": {
