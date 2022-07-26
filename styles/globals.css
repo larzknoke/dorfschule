@@ -38,9 +38,9 @@ h3 {
   gap: 10px;
 }
 
-.button {
+/* .button {
   @apply hover:bg-slate-700 hover:text-white px-10 py-3 rounded-sm bg-slate-300 transition-all;
-}
+} */
 
 .DatePicker .DateRangePicker_picker {
   @apply z-50;

@@ -7,13 +7,15 @@ import "../styles/globals.css";
 
 const theme = extendTheme({
   fonts: {
-    body: `Roboto", "ui-sans-serif", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI"`,
+    body: `"Roboto", "ui-sans-serif"`,
+  },
+  radii: {
+    md: ".2rem",
   },
   components: {
     Button: {
       baseStyle: {
-        fontWeight: "normal", // Normally, it is "semibold"
-        borderRadius: "sm",
+        fontWeight: "normal",
       },
     },
   },
