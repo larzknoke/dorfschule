@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import moment from "moment";
 import { db } from "../../lib/firebase";
 import { addDoc, collection } from "firebase/firestore";
+import { useToast } from "@chakra-ui/react";
 
 import {
   Modal,
@@ -29,7 +30,7 @@ import "react-dates/lib/css/_datepicker.css";
 
 import { DateRangePicker } from "react-dates";
 
-function EventForm() {
+function EventForm({ fetchEvents }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [name, setName] = useState("");
@@ -43,10 +44,9 @@ function EventForm() {
   const finalRef = useRef(null);
 
   const dbEvents = collection(db, "events");
+  const toast = useToast();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleSubmit = async () => {
     const formData = {
       name: name,
       beschreibung: beschreibung,
@@ -67,7 +67,15 @@ function EventForm() {
       setStartDate(moment());
       setEndDate(moment());
 
-      getEvents();
+      toast({
+        title: "Event gespeichert.",
+        description: "Das Event wurde erfolgreich angelegt.",
+        status: "success",
+        duration: 2500,
+        isClosable: true,
+      });
+
+      fetchEvents();
     } catch (e) {
       console.error("Error adding document: ", e);
       alert("Error adding document: ", e);
@@ -79,9 +87,6 @@ function EventForm() {
       <Button onClick={onOpen} alignSelf="start">
         neuen Termin eintragen
       </Button>
-      {/* <Button ml={4} ref={finalRef}>
-        I'll receive focus on close
-      </Button> */}
 
       <Modal
         initialFocusRef={initialRef}
@@ -95,56 +100,70 @@ function EventForm() {
           <ModalHeader>Neues Event</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-            <FormControl>
-              <FormLabel>Name</FormLabel>
-              <Input
-                ref={initialRef}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </FormControl>
+            <form
+              id="new-event"
+              onSubmit={(event) => {
+                event.preventDefault();
+                handleSubmit();
+                onClose();
+              }}
+            >
+              <FormControl>
+                <FormLabel>Name</FormLabel>
+                <Input
+                  ref={initialRef}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </FormControl>
 
-            <FormControl mt={4}>
-              <FormLabel>Beschreibung</FormLabel>
-              <Textarea size={"sm"} />
-            </FormControl>
-            <FormControl mt={4}>
-              <FormLabel>Personenanzahl</FormLabel>
-              <NumberInput min={1} precision={0}>
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-            </FormControl>
-            <FormControl mt={4} className="DatePicker">
-              <FormLabel>Datum</FormLabel>
-              <DateRangePicker
-                minimumNights={0}
-                startDateId="startDate"
-                endDateId="endDate"
-                startDate={startDate}
-                endDate={endDate}
-                openDirection="up"
-                onDatesChange={({ startDate, endDate }) => {
-                  setStartDate(startDate);
-                  setEndDate(endDate);
-                  console.log(startDate, endDate);
-                }}
-                focusedInput={focusedInput}
-                onFocusChange={(focusedInput) => {
-                  setFocusedInput(focusedInput);
-                }}
-              />
-            </FormControl>
+              <FormControl mt={4}>
+                <FormLabel>Beschreibung</FormLabel>
+                <Textarea size={"sm"} />
+              </FormControl>
+              <FormControl mt={4}>
+                <FormLabel>Personenanzahl</FormLabel>
+                <NumberInput min={1} precision={0}>
+                  <NumberInputField />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              </FormControl>
+              <FormControl mt={4} className="DatePicker">
+                <FormLabel>Datum</FormLabel>
+                <DateRangePicker
+                  minimumNights={0}
+                  startDateId="startDate"
+                  endDateId="endDate"
+                  startDate={startDate}
+                  endDate={endDate}
+                  openDirection="up"
+                  onDatesChange={({ startDate, endDate }) => {
+                    setStartDate(startDate);
+                    setEndDate(endDate);
+                    console.log(startDate, endDate);
+                  }}
+                  focusedInput={focusedInput}
+                  onFocusChange={(focusedInput) => {
+                    setFocusedInput(focusedInput);
+                  }}
+                />
+              </FormControl>
+            </form>
           </ModalBody>
 
           <ModalFooter>
             <Button mr={3} onClick={onClose}>
               Abrechen
             </Button>
-            <Button onClick={handleSubmit} colorScheme={"green"}>
+            <Button
+              // onClick={handleSubmit}
+              colorScheme={"green"}
+              type="submit"
+              form="new-event"
+            >
               Speichern
             </Button>
           </ModalFooter>

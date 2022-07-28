@@ -16,6 +16,7 @@ import { async } from "@firebase/util";
 // import deLocale from "@fullcalendar/core/locales/de";
 
 import EventTable from "./components/eventTable";
+import EventForm from "./components/eventForm";
 
 function Verein() {
   const [events, setEvents] = useState([]);
@@ -48,7 +49,10 @@ function Verein() {
         <div className="md:p-20 p-12 text-slate-700 ">
           <h1>Termine und Kalender</h1>
           <div className="flex space-x-8 2xl:space-x-44 flex-col md:flex-row space-y-12 md:space-y-0">
-            <EventTable events={events} />
+            <div className="flex flex-col space-y-6">
+              <EventForm fetchEvents={fetchEvents} />
+              <EventTable events={events} />
+            </div>
             {/* <div className="DatePicker border-l-2 px-6 py-3 border-slate-200 w-full">
               <h3>Neuen Termin eintragen</h3>
               <div className="mb-6">

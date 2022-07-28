@@ -23,7 +23,6 @@ import EventForm from "./eventForm";
 function EventTable({ events }) {
   return (
     <Stack spacing={6}>
-      <EventForm />
       {events && (
         <TableContainer>
           <Table variant="simple">
