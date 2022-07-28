@@ -27,7 +27,7 @@ function EventTable({ events }) {
       {events && (
         <TableContainer>
           <Table variant="simple">
-            <TableCaption>Stand 26.07.2022</TableCaption>
+            <TableCaption>Stand {moment().format("DD.MM.YYYY")}</TableCaption>
             <Thead>
               <Tr>
                 <Th>Name</Th>

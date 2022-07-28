@@ -1,5 +1,8 @@
 import { useRef, useState } from "react";
 import moment from "moment";
+import { db } from "../../lib/firebase";
+import { addDoc, collection } from "firebase/firestore";
+
 import {
   Modal,
   ModalOverlay,
@@ -39,6 +42,38 @@ function EventForm() {
   const initialRef = useRef(null);
   const finalRef = useRef(null);
 
+  const dbEvents = collection(db, "events");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = {
+      name: name,
+      beschreibung: beschreibung,
+      personenzahl: personenzahl,
+      startDate: startDate.format("YYYY-MM-DD"),
+      endDate: endDate.format("YYYY-MM-DD"),
+    };
+
+    console.log("Submit", formData);
+
+    try {
+      const docRef = await addDoc(dbEvents, formData);
+      console.log("Document written with ID: ", docRef.id);
+
+      setName("");
+      setBeschreibung("");
+      setPersonenzahl("");
+      setStartDate(moment());
+      setEndDate(moment());
+
+      getEvents();
+    } catch (e) {
+      console.error("Error adding document: ", e);
+      alert("Error adding document: ", e);
+    }
+  };
+
   return (
     <>
       <Button onClick={onOpen} alignSelf="start">
@@ -62,7 +97,11 @@ function EventForm() {
           <ModalBody pb={6}>
             <FormControl>
               <FormLabel>Name</FormLabel>
-              <Input ref={initialRef} />
+              <Input
+                ref={initialRef}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </FormControl>
 
             <FormControl mt={4}>
@@ -79,7 +118,7 @@ function EventForm() {
                 </NumberInputStepper>
               </NumberInput>
             </FormControl>
-            <FormControl mt={4}>
+            <FormControl mt={4} className="DatePicker">
               <FormLabel>Datum</FormLabel>
               <DateRangePicker
                 minimumNights={0}
@@ -105,7 +144,9 @@ function EventForm() {
             <Button mr={3} onClick={onClose}>
               Abrechen
             </Button>
-            <Button colorScheme={"green"}>Speichern</Button>
+            <Button onClick={handleSubmit} colorScheme={"green"}>
+              Speichern
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

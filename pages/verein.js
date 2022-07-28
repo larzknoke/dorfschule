@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Head from "next/head";
 
-import { app, db } from "../lib/firebase";
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import { getEvents } from "../lib/events";
 
 import moment from "moment";
 import deLocale from "moment/locale/de";
@@ -19,56 +18,19 @@ import { async } from "@firebase/util";
 import EventTable from "./components/eventTable";
 
 function Verein() {
-  const dbEvents = collection(db, "events");
-
   const [events, setEvents] = useState([]);
 
   const calendarRef = useRef(null);
 
   useEffect(() => {
     moment.locale("de", deLocale);
-    getEvents();
+    fetchEvents();
   }, []);
 
-  const getEvents = () => {
-    getDocs(dbEvents).then((data) => {
-      setEvents(
-        data.docs.map((item) => {
-          return { ...item.data(), id: item.id };
-        })
-      );
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const formData = {
-      name: name,
-      beschreibung: beschreibung,
-      personenzahl: personenzahl,
-      startDate: startDate.format("YYYY-MM-DD"),
-      endDate: endDate.format("YYYY-MM-DD"),
-    };
-
-    console.log("Submit", formData);
-
-    try {
-      const docRef = await addDoc(dbEvents, formData);
-      console.log("Document written with ID: ", docRef.id);
-
-      setName("");
-      setBeschreibung("");
-      setPersonenzahl("");
-      setStartDate(moment());
-      setEndDate(moment());
-
-      getEvents();
-    } catch (e) {
-      console.error("Error adding document: ", e);
-      alert("Error adding document: ", e);
-    }
-  };
+  async function fetchEvents() {
+    const events = await getEvents();
+    setEvents(events);
+  }
 
   return (
     <div>
@@ -152,7 +114,7 @@ function Verein() {
               </div>
               <Button onClick={handleSubmit}>Senden</Button>
             </div> */}
-            <div className="w-full">
+            {/* <div className="w-full">
               <FullCalendar
                 ref={calendarRef}
                 // innerRef={calendarRef}
@@ -167,10 +129,11 @@ function Verein() {
                     title: event.beschreibung,
                     start: event.startDate,
                     end: event.endDate,
+                    color: "var(--chakra-colors-gray-600)",
                   };
                 })}
               />
-            </div>
+            </div> */}
           </div>
         </div>
       </main>
