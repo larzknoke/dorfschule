@@ -119,11 +119,20 @@ function EventForm({ fetchEvents }) {
 
               <FormControl mt={4}>
                 <FormLabel>Beschreibung</FormLabel>
-                <Textarea size={"sm"} />
+                <Textarea
+                  size={"sm"}
+                  value={beschreibung}
+                  onChange={(e) => setBeschreibung(e.target.value)}
+                />
               </FormControl>
               <FormControl mt={4}>
                 <FormLabel>Personenanzahl</FormLabel>
-                <NumberInput min={1} precision={0}>
+                <NumberInput
+                  min={1}
+                  precision={0}
+                  value={personenzahl}
+                  onChange={(value) => setPersonenzahl(value)}
+                >
                   <NumberInputField />
                   <NumberInputStepper>
                     <NumberIncrementStepper />
