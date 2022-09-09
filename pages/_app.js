@@ -18,6 +18,13 @@ const theme = extendTheme({
         fontWeight: "normal",
       },
     },
+    Alert: {
+      baseStyle: {
+        container: {
+          borderRadius: "md",
+        },
+      },
+    },
   },
 });
 

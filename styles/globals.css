@@ -91,3 +91,10 @@ h3 {
 .fc .fc-daygrid-day.fc-day-today {
   @apply bg-slate-200 !important;
 }
+
+/* EVENT TABLE */
+
+.event-row:hover {
+  background-color: theme("colors.slate.100");
+  cursor: pointer;
+}

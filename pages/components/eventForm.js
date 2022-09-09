@@ -120,7 +120,6 @@ function EventForm({ fetchEvents }) {
               <FormControl mt={4}>
                 <FormLabel>Beschreibung</FormLabel>
                 <Textarea
-                  size={"sm"}
                   value={beschreibung}
                   onChange={(e) => setBeschreibung(e.target.value)}
                 />
