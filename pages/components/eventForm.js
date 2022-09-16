@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { useSession } from "next-auth/react";
 import moment from "moment";
 import { db } from "../../lib/firebase";
 import { addDoc, collection } from "firebase/firestore";
@@ -31,6 +32,7 @@ import "react-dates/lib/css/_datepicker.css";
 import { DateRangePicker } from "react-dates";
 
 function EventForm({ fetchEvents }) {
+  const { data: session } = useSession();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [name, setName] = useState("");
@@ -84,10 +86,11 @@ function EventForm({ fetchEvents }) {
 
   return (
     <>
-      <Button onClick={onOpen} alignSelf="start">
-        neuen Termin eintragen
-      </Button>
-
+      {session && (
+        <Button onClick={onOpen} alignSelf="start">
+          neuen Termin eintragen
+        </Button>
+      )}
       <Modal
         initialFocusRef={initialRef}
         finalFocusRef={finalRef}

@@ -2,6 +2,10 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+import LoginBtn from "./loginBtn";
+
+import { Text } from "@chakra-ui/react";
+
 function Header({ darkNav = false }) {
   return (
     <header>
@@ -34,6 +38,9 @@ function Header({ darkNav = false }) {
           <Link href={"/kontakt"}>
             <span>Kontakt</span>
           </Link>
+          <Text>
+            <LoginBtn />
+          </Text>
         </div>
       </div>
     </header>

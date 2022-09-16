@@ -1,3 +1,4 @@
+import { SessionProvider } from "next-auth/react";
 import "@fullcalendar/common/main.css";
 import "@fullcalendar/daygrid/main.css";
 import "@fullcalendar/timegrid/main.css";
@@ -28,11 +29,13 @@ const theme = extendTheme({
   },
 });
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
-    <ChakraProvider resetCSS={false} theme={theme}>
-      <Component {...pageProps} />
-    </ChakraProvider>
+    <SessionProvider session={session}>
+      <ChakraProvider resetCSS={false} theme={theme}>
+        <Component {...pageProps} />
+      </ChakraProvider>{" "}
+    </SessionProvider>
   );
 }
 

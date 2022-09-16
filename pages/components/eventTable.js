@@ -20,17 +20,27 @@ import {
   TableCaption,
   TableContainer,
   Alert,
+  Text,
+  Stack,
 } from "@chakra-ui/react";
 import { AlertIcon } from "@chakra-ui/react";
 
 function EventTable({ events }) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen: openEvent, onClose } = useDisclosure();
+  const [selectedEvent, setSelectedEvent] = useState({});
 
   const initialRef = useRef(null);
   const finalRef = useRef(null);
 
-  const setModal = (e) => {
-    console.log(isOpen);
+  const getEvent = (id) => {
+    return events.find((event) => {
+      return event.id === id;
+    });
+  };
+
+  const setModal = (id) => {
+    setSelectedEvent(getEvent(id));
+    openEvent();
   };
 
   return (
@@ -49,7 +59,11 @@ function EventTable({ events }) {
             <Tbody>
               {events.map((event) => {
                 return (
-                  <Tr key={event.id} onClick={setModal} className="event-row">
+                  <Tr
+                    key={event.id}
+                    onClick={() => setModal(event.id)}
+                    className="event-row"
+                  >
                     <Td>{event.name}</Td>
                     <Td>{event.beschreibung}</Td>
                     <Td>
@@ -77,13 +91,23 @@ function EventTable({ events }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+          <ModalHeader>{selectedEvent.beschreibung}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <p>Test</p>
+            <Stack>
+              <Text>Name: {selectedEvent.name}</Text>
+              <Text>
+                Datum: {moment(selectedEvent.startDate).format("DD.MM.YYYY")} —{" "}
+                {moment(selectedEvent.endDate).format("DD.MM.YYYY")}
+              </Text>
+              <Text>Personen: {selectedEvent.personenzahl}</Text>
+            </Stack>
           </ModalBody>
 
           <ModalFooter>
+            <Button colorScheme="red" mr={3}>
+              Löschen
+            </Button>
             <Button onClick={onClose}>Schließen</Button>
           </ModalFooter>
         </ModalContent>
