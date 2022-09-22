@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import LoginBtn from "./loginBtn";
+import LoginBtn from "./login";
 
 import { Text } from "@chakra-ui/react";
 
