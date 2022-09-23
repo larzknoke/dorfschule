@@ -94,7 +94,7 @@ h3 {
 
 /* EVENT TABLE */
 
-.event-row:hover {
+table:not(.admin) .event-row:hover {
   background-color: theme("colors.slate.100");
   cursor: pointer;
 }
