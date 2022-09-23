@@ -15,7 +15,6 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Checkbox,
   Link,
   Center,
   Text,
@@ -25,34 +24,45 @@ import {
 export default function LoginBtn() {
   const { isOpen, onOpen: openLogin, onClose } = useDisclosure();
 
-  const initialRef = useRef(null);
-  const finalRef = useRef(null);
-
-  const { user } = useAuth();
-  console.log(user);
+  const { user, login, logout, signup, providerLogin } = useAuth();
 
   const [data, setData] = useState({
     email: "",
     password: "",
   });
 
-  const handleLogin = (e) => {
+  const [doSignUp, setDoSignup] = useState(false);
+  const initialRef = useRef(null);
+  const finalRef = useRef(null);
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("Login:");
-    console.log(data);
+    try {
+      await login(data.email, data.password);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    try {
+      await signup(data.email, data.password);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   if (user) {
     return (
       <>
-        Angemeldet: {session.user.email} <br />
-        <button onClick={() => console.log("Logout")}>Logout</button>
+        <span onClick={() => logout()}>Logout</span>
       </>
     );
   }
   return (
     <>
-      <button onClick={() => openLogin()}>Login</button>
+      <span onClick={() => openLogin()}>Login</span>
       <Modal
         isOpen={isOpen}
         onClose={onClose}
@@ -61,11 +71,11 @@ export default function LoginBtn() {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Login</ModalHeader>
+          <ModalHeader>{doSignUp ? "Registrieren" : "Login"}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Stack spacing={4}>
-              <form onSubmit={handleLogin}>
+              <form onSubmit={!doSignUp ? handleLogin : handleSignUp}>
                 <Stack spacing={4}>
                   <FormControl
                     id="email"
@@ -91,19 +101,36 @@ export default function LoginBtn() {
                       align={"start"}
                       justify={"space-between"}
                     >
-                      <Checkbox>Angemeldet bleiben</Checkbox>
-                      <Link color={"blue.400"}>Passwort vergessen?</Link>
+                      {!doSignUp ? (
+                        <Link onClick={() => setDoSignup(true)}>
+                          Registrieren
+                        </Link>
+                      ) : (
+                        <Link onClick={() => setDoSignup(false)}>
+                          Bereits registriert?
+                        </Link>
+                      )}
+                      {!doSignUp && <Link>Passwort vergessen?</Link>}
                     </Stack>
-                    <Button type="submit">Login</Button>
+                    <Button type="submit">
+                      {doSignUp ? "Registrieren" : "Login"}
+                    </Button>
                   </Stack>
                 </Stack>
               </form>
               <Divider orientation="horizontal" />
-              <Button w={"full"} variant={"outline"} leftIcon={<FcGoogle />}>
-                <Center>
-                  <Text>Login mit Google</Text>
-                </Center>
-              </Button>
+              {!doSignUp && (
+                <Button
+                  w={"full"}
+                  variant={"outline"}
+                  leftIcon={<FcGoogle />}
+                  onClick={providerLogin}
+                >
+                  <Center>
+                    <Text>Login mit Google</Text>
+                  </Center>
+                </Button>
+              )}
             </Stack>
           </ModalBody>
 

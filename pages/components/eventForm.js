@@ -29,8 +29,10 @@ import "react-dates/initialize";
 import "react-dates/lib/css/_datepicker.css";
 
 import { DateRangePicker } from "react-dates";
+import { useAuth } from "../../context/AuthContext";
 
 function EventForm({ fetchEvents }) {
+  const { user } = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [name, setName] = useState("");
@@ -84,100 +86,102 @@ function EventForm({ fetchEvents }) {
 
   return (
     <>
-      {true && (
-        <Button onClick={onOpen} alignSelf="start">
-          neuen Termin eintragen
-        </Button>
-      )}
-      <Modal
-        initialFocusRef={initialRef}
-        finalFocusRef={finalRef}
-        isOpen={isOpen}
-        onClose={onClose}
-        size="xl"
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Neues Event</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pb={6}>
-            <form
-              id="new-event"
-              onSubmit={(event) => {
-                event.preventDefault();
-                handleSubmit();
-                onClose();
-              }}
-            >
-              <FormControl>
-                <FormLabel>Name</FormLabel>
-                <Input
-                  ref={initialRef}
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </FormControl>
-
-              <FormControl mt={4}>
-                <FormLabel>Beschreibung</FormLabel>
-                <Textarea
-                  value={beschreibung}
-                  onChange={(e) => setBeschreibung(e.target.value)}
-                />
-              </FormControl>
-              <FormControl mt={4}>
-                <FormLabel>Personenanzahl</FormLabel>
-                <NumberInput
-                  min={1}
-                  precision={0}
-                  value={personenzahl}
-                  onChange={(value) => setPersonenzahl(value)}
+      {user && (
+        <>
+          <Button onClick={onOpen} alignSelf="start">
+            neuen Termin eintragen
+          </Button>
+          <Modal
+            initialFocusRef={initialRef}
+            finalFocusRef={finalRef}
+            isOpen={isOpen}
+            onClose={onClose}
+            size="xl"
+          >
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Neues Event</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody pb={6}>
+                <form
+                  id="new-event"
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    handleSubmit();
+                    onClose();
+                  }}
                 >
-                  <NumberInputField />
-                  <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                  </NumberInputStepper>
-                </NumberInput>
-              </FormControl>
-              <FormControl mt={4} className="DatePicker">
-                <FormLabel>Datum</FormLabel>
-                <DateRangePicker
-                  minimumNights={0}
-                  startDateId="startDate"
-                  endDateId="endDate"
-                  startDate={startDate}
-                  endDate={endDate}
-                  openDirection="up"
-                  onDatesChange={({ startDate, endDate }) => {
-                    setStartDate(startDate);
-                    setEndDate(endDate);
-                    console.log(startDate, endDate);
-                  }}
-                  focusedInput={focusedInput}
-                  onFocusChange={(focusedInput) => {
-                    setFocusedInput(focusedInput);
-                  }}
-                />
-              </FormControl>
-            </form>
-          </ModalBody>
+                  <FormControl>
+                    <FormLabel>Name</FormLabel>
+                    <Input
+                      ref={initialRef}
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                  </FormControl>
 
-          <ModalFooter>
-            <Button mr={3} onClick={onClose}>
-              Abrechen
-            </Button>
-            <Button
-              // onClick={handleSubmit}
-              colorScheme={"green"}
-              type="submit"
-              form="new-event"
-            >
-              Speichern
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+                  <FormControl mt={4}>
+                    <FormLabel>Beschreibung</FormLabel>
+                    <Textarea
+                      value={beschreibung}
+                      onChange={(e) => setBeschreibung(e.target.value)}
+                    />
+                  </FormControl>
+                  <FormControl mt={4}>
+                    <FormLabel>Personenanzahl</FormLabel>
+                    <NumberInput
+                      min={1}
+                      precision={0}
+                      value={personenzahl}
+                      onChange={(value) => setPersonenzahl(value)}
+                    >
+                      <NumberInputField />
+                      <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                      </NumberInputStepper>
+                    </NumberInput>
+                  </FormControl>
+                  <FormControl mt={4} className="DatePicker">
+                    <FormLabel>Datum</FormLabel>
+                    <DateRangePicker
+                      minimumNights={0}
+                      startDateId="startDate"
+                      endDateId="endDate"
+                      startDate={startDate}
+                      endDate={endDate}
+                      openDirection="up"
+                      onDatesChange={({ startDate, endDate }) => {
+                        setStartDate(startDate);
+                        setEndDate(endDate);
+                        console.log(startDate, endDate);
+                      }}
+                      focusedInput={focusedInput}
+                      onFocusChange={(focusedInput) => {
+                        setFocusedInput(focusedInput);
+                      }}
+                    />
+                  </FormControl>
+                </form>
+              </ModalBody>
+
+              <ModalFooter>
+                <Button mr={3} onClick={onClose}>
+                  Abrechen
+                </Button>
+                <Button
+                  // onClick={handleSubmit}
+                  colorScheme={"green"}
+                  type="submit"
+                  form="new-event"
+                >
+                  Speichern
+                </Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+        </>
+      )}
     </>
   );
 }

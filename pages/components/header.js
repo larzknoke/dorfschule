@@ -38,9 +38,7 @@ function Header({ darkNav = false }) {
           <Link href={"/kontakt"}>
             <span>Kontakt</span>
           </Link>
-          <Text>
-            <LoginBtn />
-          </Text>
+          <LoginBtn />
         </div>
       </div>
     </header>
