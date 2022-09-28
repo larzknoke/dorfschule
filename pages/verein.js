@@ -8,11 +8,6 @@ import deLocale from "moment/locale/de";
 
 import Header from "./components/header";
 
-import FullCalendar from "@fullcalendar/react";
-import interactionPlugin from "@fullcalendar/interaction";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import { async } from "@firebase/util";
 // import deLocale from "@fullcalendar/core/locales/de";
 
 import EventTable from "./components/eventTable";
@@ -20,8 +15,6 @@ import EventForm from "./components/eventForm";
 
 function Verein() {
   const [events, setEvents] = useState([]);
-
-  const calendarRef = useRef(null);
 
   useEffect(() => {
     moment.locale("de", deLocale);
@@ -53,29 +46,7 @@ function Verein() {
               <EventForm fetchEvents={fetchEvents} />
               <EventTable events={events} />
             </div>
-            <div className="w-full">
-              <FullCalendar
-                ref={calendarRef}
-                // innerRef={calendarRef}
-                plugins={[timeGridPlugin, interactionPlugin, dayGridPlugin]}
-                initialView="dayGridMonth"
-                locale="deLocale"
-                firstDay={1}
-                height={"auto"}
-                buttonText={{ today: "Heute" }}
-                events={events.map((event) => {
-                  return {
-                    title: event.beschreibung,
-                    start: event.startDate,
-                    // end: event.endDate,
-                    end: moment(event.endDate)
-                      .add(1, "days")
-                      .format("YYYY-MM-DD"),
-                    color: "var(--chakra-colors-gray-600)",
-                  };
-                })}
-              />
-            </div>
+            <div className="w-full">Bild</div>
           </div>
         </div>
       </main>

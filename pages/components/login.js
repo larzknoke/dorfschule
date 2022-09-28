@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { FcGoogle } from "react-icons/fc";
+import NextLink from "next/link";
 import {
   Modal,
   ModalOverlay,
@@ -15,11 +16,25 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Link,
   Center,
   Text,
   Divider,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  IconButton,
+  Link,
 } from "@chakra-ui/react";
+
+import {
+  CalendarIcon,
+  WarningTwoIcon,
+  ChevronRightIcon,
+  CloseIcon,
+} from "@chakra-ui/icons";
+
+import { FaUser } from "react-icons/fa";
 
 export default function LoginBtn() {
   const { isOpen, onOpen: openLogin, onClose } = useDisclosure();
@@ -55,9 +70,22 @@ export default function LoginBtn() {
 
   if (user) {
     return (
-      <>
-        <span onClick={() => logout()}>Logout</span>
-      </>
+      <Menu>
+        <MenuButton
+          as={IconButton}
+          aria-label="Options"
+          icon={<FaUser />}
+          variant="ghost"
+        />
+        <MenuList>
+          <NextLink href="/admin" passHref>
+            <MenuItem as="a">Admin</MenuItem>
+          </NextLink>
+          <MenuItem as="a" onClick={() => logout()}>
+            Logout
+          </MenuItem>
+        </MenuList>
+      </Menu>
     );
   }
   return (

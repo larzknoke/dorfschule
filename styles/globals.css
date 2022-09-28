@@ -11,14 +11,14 @@
 }
 
 .nav {
-  @apply text-white text-xl font-normal uppercase h-full space-x-16;
+  @apply text-white font-normal  h-full space-x-16;
 }
 .nav.dark {
   @apply text-slate-700;
 }
 
-.nav span {
-  @apply inline-block hover:cursor-pointer hover:translate-y-1 transition duration-300;
+.nav > span {
+  @apply inline-block hover:cursor-pointer hover:translate-y-1 transition duration-300 text-xl uppercase;
 }
 
 h1 {
