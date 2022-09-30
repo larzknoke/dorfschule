@@ -25,21 +25,16 @@ import {
   MenuItem,
   IconButton,
   Link,
+  useToast,
 } from "@chakra-ui/react";
-
-import {
-  CalendarIcon,
-  WarningTwoIcon,
-  ChevronRightIcon,
-  CloseIcon,
-} from "@chakra-ui/icons";
 
 import { FaUser } from "react-icons/fa";
 
 export default function LoginBtn() {
   const { isOpen, onOpen: openLogin, onClose } = useDisclosure();
-
   const { user, login, logout, signup, providerLogin } = useAuth();
+
+  const toast = useToast();
 
   const [data, setData] = useState({
     email: "",
@@ -61,11 +56,26 @@ export default function LoginBtn() {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-    try {
-      await signup(data.email, data.password);
-    } catch (error) {
-      console.log(error);
-    }
+
+    await signup(data.email, data.password)
+      .then((data) => {
+        toast({
+          title: "Registrierung erfolgreich",
+          description: `${data.email} erfolgreich registriert`,
+          status: "success",
+          duration: 2500,
+          isClosable: true,
+        });
+      })
+      .catch((err) => {
+        toast({
+          title: "Ein Fehler ist aufgetreten.",
+          description: `${err}`,
+          status: "error",
+          duration: 2500,
+          isClosable: true,
+        });
+      });
   };
 
   if (user) {

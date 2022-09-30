@@ -2,7 +2,6 @@ import { useRef, useState } from "react";
 import moment from "moment";
 import { db } from "../../lib/firebase";
 import { addDoc, collection } from "firebase/firestore";
-import { useToast } from "@chakra-ui/react";
 
 import {
   Modal,
@@ -23,6 +22,7 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  useToast,
 } from "@chakra-ui/react";
 
 import "react-dates/initialize";

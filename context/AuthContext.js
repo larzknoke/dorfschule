@@ -7,7 +7,8 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
-import { auth } from "../lib/firebase";
+import { auth, db } from "../lib/firebase";
+import { setDoc, doc } from "firebase/firestore";
 
 const AuthContext = createContext({});
 const provider = new GoogleAuthProvider();
@@ -17,9 +18,9 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  console.log(user);
 
   useEffect(() => {
+    console.log(auth);
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser({
@@ -36,8 +37,17 @@ export const AuthContextProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
-  const signup = (email, password) => {
-    return createUserWithEmailAndPassword(auth, email, password);
+  const signup = async (email, password) => {
+    try {
+      const cred = await createUserWithEmailAndPassword(auth, email, password);
+      // await auth.setCustomUserClaims(cred.user.uid, { admin: false });
+      await setDoc(doc(db, "users", cred.user.uid), {
+        admin: false,
+      });
+      return cred.user;
+    } catch (error) {
+      throw new Error(error.code);
+    }
   };
 
   const login = (email, password) => {
