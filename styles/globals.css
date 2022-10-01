@@ -11,24 +11,24 @@
 }
 
 .nav {
-  @apply text-white text-xl font-normal uppercase h-full space-x-16;
+  @apply h-full space-x-16  font-normal text-white;
 }
 .nav.dark {
   @apply text-slate-700;
 }
 
-.nav span {
-  @apply inline-block hover:cursor-pointer hover:translate-y-1 transition duration-300;
+.nav > span {
+  @apply inline-block text-xl uppercase transition duration-300 hover:translate-y-1 hover:cursor-pointer;
 }
 
 h1 {
-  @apply text-3xl mb-8 font-medium;
+  @apply mb-8 text-3xl font-medium;
 }
 h2 {
-  @apply text-2xl mb-5;
+  @apply mb-5 text-2xl;
 }
 h3 {
-  @apply text-xl mb-5;
+  @apply mb-5 text-xl;
 }
 
 .fc-toolbar button {
@@ -52,7 +52,7 @@ h3 {
   @apply justify-evenly;
 }
 .DatePicker .DateInput_input {
-  @apply py-[5px] text-lg text-center;
+  @apply py-[5px] text-center text-lg;
 }
 
 .DatePicker .DateRangePickerInput__withBorder {
