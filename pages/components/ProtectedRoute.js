@@ -7,12 +7,12 @@ function ProtectedRoute({ children }) {
   const router = useRouter();
 
   useEffect(() => {
-    if (!user) {
+    if (!user?.admin) {
       router.push("/");
     }
   }, [router, user]);
 
-  return <>{user ? children : null}</>;
+  return <>{user?.admin ? children : null}</>;
 }
 
 export default ProtectedRoute;

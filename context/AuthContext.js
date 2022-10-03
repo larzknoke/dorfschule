@@ -9,6 +9,7 @@ import {
 } from "firebase/auth";
 import { auth, db } from "../lib/firebase";
 import { setDoc, doc } from "firebase/firestore";
+import nookies from "nookies";
 
 const AuthContext = createContext({});
 const provider = new GoogleAuthProvider();
@@ -20,16 +21,26 @@ export const AuthContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log(auth);
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser({
-          uid: user.uid,
-          email: user.email,
-          displayName: user.displayName,
+    const unsubscribe = onAuthStateChanged(auth, (authUser) => {
+      console.log(authUser);
+      if (authUser) {
+        authUser.getIdToken().then((token) => {
+          setUser({
+            uid: authUser.uid,
+            email: authUser.email,
+            displayName: authUser.displayName,
+          });
+          authUser.getIdTokenResult().then((res) => {
+            setUser((prevState) => ({
+              ...prevState,
+              admin: res.claims.admin ? true : false,
+            }));
+          });
+          nookies.set(undefined, "token", token, { path: "/" });
         });
       } else {
         setUser(null);
+        nookies.set(undefined, "token", "", { path: "/" });
       }
       setLoading(false);
     });
@@ -40,7 +51,6 @@ export const AuthContextProvider = ({ children }) => {
   const signup = async (email, password) => {
     try {
       const cred = await createUserWithEmailAndPassword(auth, email, password);
-      // await auth.setCustomUserClaims(cred.user.uid, { admin: false });
       await setDoc(doc(db, "users", cred.user.uid), {
         admin: false,
       });

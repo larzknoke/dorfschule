@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import useSWR from "swr";
 import Head from "next/head";
 import Header from "./components/header";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -33,14 +34,21 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 
+import fetcher from "../util/fetcher";
+import nookies from "nookies";
+import { auth } from "../lib/firebase";
+
 function Admin() {
   const [events, setEvents] = useState([]);
   const calendarRef = useRef(null);
   const toast = useToast();
+  const cookies = nookies.get();
 
   useEffect(() => {
     fetchEvents();
   }, []);
+
+  const { data } = useSWR(auth ? ["/api/user", cookies.token] : null, fetcher);
 
   async function fetchEvents() {
     const events = await getEvents();
@@ -70,8 +78,8 @@ function Admin() {
       </Head>
       <Header darkNav="true" />
       <main>
-        <div className="md:p-20 p-12 text-slate-700 ">
-          <div className="flex space-x-8 2xl:space-x-28 flex-col md:flex-row space-y-12 md:space-y-0">
+        <div className="p-12 text-slate-700 md:p-20 ">
+          <div className="flex flex-col space-x-8 space-y-12 md:flex-row md:space-y-0 2xl:space-x-28">
             <div>
               <h1>Alle Events</h1>
               <div className="flex flex-col space-y-6">
