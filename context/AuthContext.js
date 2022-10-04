@@ -10,6 +10,8 @@ import {
 import { auth, db } from "../lib/firebase";
 import { setDoc, doc } from "firebase/firestore";
 import nookies from "nookies";
+import useSWR from "swr";
+import fetcher from "../util/fetcher";
 
 const AuthContext = createContext({});
 const provider = new GoogleAuthProvider();
@@ -22,7 +24,6 @@ export const AuthContextProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (authUser) => {
-      console.log(authUser);
       if (authUser) {
         authUser.getIdToken().then((token) => {
           setUser({
@@ -50,12 +51,23 @@ export const AuthContextProvider = ({ children }) => {
 
   const signup = async (email, password) => {
     try {
-      const cred = await createUserWithEmailAndPassword(auth, email, password);
-      await setDoc(doc(db, "users", cred.user.uid), {
-        admin: false,
-      });
-      return cred.user;
+      await createUserWithEmailAndPassword(auth, email, password).then(
+        (res) => {
+          console.log("res", res.user.uid);
+          const uid = res.user.uid;
+          fetch("api/setAdmin", {
+            method: "POST",
+            headers: {
+              Accept: "application/json, text/plain, */*",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ uid }),
+          });
+        }
+      );
+      return res.user;
     } catch (error) {
+      console.log("signup error: ", error);
       throw new Error(error.code);
     }
   };

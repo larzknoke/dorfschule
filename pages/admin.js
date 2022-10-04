@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-import useSWR from "swr";
 import Head from "next/head";
 import Header from "./components/header";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -34,21 +33,14 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 
-import fetcher from "../util/fetcher";
-import nookies from "nookies";
-import { auth } from "../lib/firebase";
-
 function Admin() {
   const [events, setEvents] = useState([]);
   const calendarRef = useRef(null);
   const toast = useToast();
-  const cookies = nookies.get();
 
   useEffect(() => {
     fetchEvents();
   }, []);
-
-  const { data } = useSWR(auth ? ["/api/user", cookies.token] : null, fetcher);
 
   async function fetchEvents() {
     const events = await getEvents();
