@@ -32,6 +32,7 @@ export const AuthContextProvider = ({ children }) => {
             displayName: authUser.displayName,
           });
           authUser.getIdTokenResult().then((res) => {
+            console.log("authUser: ", res);
             setUser((prevState) => ({
               ...prevState,
               admin: res.claims.admin ? true : false,
@@ -51,21 +52,16 @@ export const AuthContextProvider = ({ children }) => {
 
   const signup = async (email, password) => {
     try {
-      await createUserWithEmailAndPassword(auth, email, password).then(
-        (res) => {
-          console.log("res", res.user.uid);
-          const uid = res.user.uid;
-          fetch("api/setAdmin", {
+      return await createUserWithEmailAndPassword(auth, email, password).then(
+        async (cred) => {
+          const uid = cred.user.uid;
+          return fetch("api/setUserRole", {
             method: "POST",
-            headers: {
-              Accept: "application/json, text/plain, */*",
-              "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ uid }),
-          });
+          }).then((res) => res.json().then((data) => data));
         }
       );
-      return res.user;
     } catch (error) {
       console.log("signup error: ", error);
       throw new Error(error.code);
