@@ -11,9 +11,14 @@
 }
 
 .nav {
-  @apply h-full space-x-16  font-normal text-white;
+  @apply h-full space-x-16  font-normal;
 }
-.nav.dark {
+.nav > span,
+.nav > button {
+  @apply text-white;
+}
+.nav.dark > span,
+.nav.dark > button {
   @apply text-slate-700;
 }
 

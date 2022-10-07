@@ -63,7 +63,7 @@ export default function LoginBtn() {
           title: "Registrierung erfolgreich",
           description: `${data.email} erfolgreich registriert`,
           status: "success",
-          duration: 2500,
+          duration: 3000,
           isClosable: true,
         });
       })
@@ -72,7 +72,7 @@ export default function LoginBtn() {
           title: "Ein Fehler ist aufgetreten.",
           description: `${err}`,
           status: "error",
-          duration: 2500,
+          duration: 3000,
           isClosable: true,
         });
       });

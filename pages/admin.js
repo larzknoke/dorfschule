@@ -5,6 +5,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { getEvents } from "../lib/events";
 import moment from "moment";
 import { FaRegTrashAlt, FaRegEdit } from "react-icons/fa";
+import Checker from "../util/checker";
 
 import FullCalendar from "@fullcalendar/react";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -87,6 +88,7 @@ function Admin() {
                           <Th>Name</Th>
                           <Th>Beschreibung</Th>
                           <Th>Personen</Th>
+                          <Th>Public</Th>
                           <Th>Datum</Th>
                           <Th></Th>
                         </Tr>
@@ -98,6 +100,9 @@ function Admin() {
                               <Td>{event.name}</Td>
                               <Td>{event.beschreibung}</Td>
                               <Td>{event.personenzahl}</Td>
+                              <Td>
+                                <Checker boolean={event.public} />
+                              </Td>
                               <Td>
                                 {moment(event.startDate).format("DD.MM.YYYY")} —{" "}
                                 {moment(event.endDate).format("DD.MM.YYYY")}

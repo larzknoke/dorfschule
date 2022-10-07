@@ -7,11 +7,8 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
-import { auth, db } from "../lib/firebase";
-import { setDoc, doc } from "firebase/firestore";
+import { auth, firebaseErrors } from "../lib/firebase";
 import nookies from "nookies";
-import useSWR from "swr";
-import fetcher from "../util/fetcher";
 
 const AuthContext = createContext({});
 const provider = new GoogleAuthProvider();
@@ -64,7 +61,7 @@ export const AuthContextProvider = ({ children }) => {
       );
     } catch (error) {
       console.log("signup error: ", error);
-      throw new Error(error.code);
+      throw firebaseErrors[error.code] || error.code;
     }
   };
 
